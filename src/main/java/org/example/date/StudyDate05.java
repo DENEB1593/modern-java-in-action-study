@@ -1,4 +1,4 @@
-package study;
+package org.example.date;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

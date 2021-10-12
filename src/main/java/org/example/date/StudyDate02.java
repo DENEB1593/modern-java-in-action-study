@@ -1,4 +1,4 @@
-package study;
+package org.example.date;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.temporal.ChronoField;
 
-public class StudyData02 {
+public class StudyDate02 {
     public static void main(String[] args) {
         // 자바 1.8 이후 기존의 Date 클래스를 대체할 LocalDate, LocalDateTime, Instant, Duration, Period가 제공
 
