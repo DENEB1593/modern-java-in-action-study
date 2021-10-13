@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -148,5 +150,17 @@ public class Main03 {
                 .reduce(Integer::min).orElse(0);
         // Integer::max로 최대값도 도출가능하다
         System.out.println(minCaloric);
+
+        // 9) 기본스트림 / 객체형스트림
+        // 기존의 reduce를 활용하여 최대/최소값을 구하는 방식을 숫자형 스트림을 활용하여 구할 수 있다.
+        int min = myNumbers.stream()
+                            .mapToInt(Integer::intValue)
+                            .min()
+                            .getAsInt();
+
+        // 혹은 IntStream, DoubleStream과 같은 객체형 스트림을 사용할 수 있다.
+        // 객체형 스트림은 박싱에 대한 비용을 절약할 수 있어, 연산에 대한 효율이 필요한 경우 고려할 수 있다.
+        IntStream intStream = myNumbers.stream().mapToInt(Integer::intValue);
+        Stream<Integer> streamInt = intStream.boxed();
     }
 }
