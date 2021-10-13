@@ -141,7 +141,6 @@ public class Main03 {
                 .map(Dish::getCalories)
                 .reduce(0, (a, b) -> a + b);
 
-
         // 최소값 도출
         // reduce의 초기값을 선언하지 않을 경우 reduce는 Optional 타입을 반환한디
         int minCaloric = dishes.stream()
