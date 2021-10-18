@@ -21,9 +21,9 @@ import org.example.optional.domain.Person;
  */
 public class Optional01 {
     public static void main(String[] args) {
-        Person peron = new Person();
+        //Person peron = new Person(car, age);
         // 현재 메소드는 null에 취약
-        String carInsuranceName = getCarInsuranceName(peron);
+        //String carInsuranceName = getCarInsuranceName(peron);
 
     }
 
@@ -51,6 +51,7 @@ public class Optional01 {
             3) if 블록을 1단계로 통일한 코드, 가독성은 좋아졌지만
                Unknown을 return 하는 부분이 많아 Unknown을 변경하는 경우 작업이 증가한다.
          */
+
         if (person != null) {
             return "Unknown";
         }
