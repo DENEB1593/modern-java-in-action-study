@@ -2,6 +2,8 @@ package org.example.date;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
 import java.time.temporal.ChronoField;
 
 import static java.time.temporal.TemporalAdjusters.*;
@@ -31,11 +33,18 @@ public class StudyDate04 {
         LocalDate now = LocalDate.now();
         // 다음 일요일 추론
         LocalDate nextSunday = now.with(nextOrSame(DayOfWeek.SUNDAY));
-        // 이번달의 마지막 날짜 추촌
+        // 이번달의 마지막 날짜 추론
         LocalDate lastDayOfMonth = now.with(lastDayOfMonth());
 
         System.out.printf("NextSunday : %s\n", nextSunday);
         System.out.printf("LastDayOfMonth : %s\n", lastDayOfMonth);
 
+        LocalDate myBirthDay = LocalDate.of(1993, Month.FEBRUARY, 23);
+        LocalDate thisYear = LocalDate.now();
+        Period myAgePeriod = Period.between(myBirthDay, thisYear);
+        System.out.printf("My age is %s\n", myAgePeriod.getYears());
+        System.out.println(myBirthDay.plusYears(myAgePeriod.getYears()).getDayOfWeek());
     }
+
+
 }

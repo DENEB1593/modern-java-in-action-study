@@ -2,8 +2,11 @@ package org.example.stream;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Comparator.comparing;
+import static java.util.Comparator.reverseOrder;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -42,10 +45,16 @@ public class Quiz {
                 .map(Trader::getName)
                 .sorted()
                 .collect(toList());
-
+        // flatMap으로 변환해보기
+        List<String> traderNames2 = transactions.stream()
+                .flatMap(transaction -> Stream.of(transaction.getTrader().getName()))
+                .distinct().sorted()
+                .collect(toList());
 
         // 5) 밀라노에 거래자가 있는가?
         boolean isTradersInMilan = transactions.stream().anyMatch(t -> "Milan".equals(t.getTrader().getCity()));
+        // 5-1) 서울에 거래자가 있는가?
+        boolean isTradersNotInSeoul = transactions.stream().noneMatch(t -> "Seoul".equals(t.getTrader().getCity()));
 
         // 6) 케임브릿지에 거주하는 거래자의 모든 트랜잭션값을 출력하시오
         List<Transaction> cambridgeTradersTranscations = transactions.stream()
@@ -63,9 +72,6 @@ public class Quiz {
                 .map(Transaction::getValue)
                 .reduce(Integer::min)
                 .orElseThrow(NullPointerException::new);
-
-        System.out.println(maxValueInTranscations + ",   " + minValueInTranscations);
-
     }
 
     static List<Transaction> getTranscations() {

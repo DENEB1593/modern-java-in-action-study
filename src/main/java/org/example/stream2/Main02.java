@@ -84,7 +84,6 @@ public class Main02 {
         // 7) 서브그룹으로 데이터 수집
         Map<Dish.Type, Long> dishCountingByType = dishes.stream()
                 .collect(groupingBy(Dish::getType, counting()));
-        System.out.println(dishCountingByType);
 
         // maxBy를 통해 Type별 최고 칼로리를 가진 요리 추출하기(Optional)
         Map<Dish.Type, Optional<Dish>> maxDishCountingByType = dishes.stream()
@@ -99,7 +98,5 @@ public class Main02 {
         // 타입별 칼로리 총합 구하기
         Map<Dish.Type, Integer> totalCaloriesByType = dishes.stream()
                 .collect(groupingBy(Dish::getType, summingInt(Dish::getCalories)));
-        System.out.println(totalCaloriesByType);
-
     }
 }

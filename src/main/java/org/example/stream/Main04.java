@@ -25,7 +25,7 @@ public class Main04 {
                             .filter(n2 ->
                                     Math.sqrt(n1 * n1 + n2 * n2) % 1 == 0)
                             .mapToObj(n2 ->
-                                    new int[] {n1, n2,  (int) Math.sqrt(n1 * n1 + n2 * n2)});
+                                    new int[] { n1, n2, (int) Math.sqrt(n1 * n1 + n2 * n2) });
                 });
 
         // 위 코드는 제곱근을 2번하기 때문에 연산비용이 존재
