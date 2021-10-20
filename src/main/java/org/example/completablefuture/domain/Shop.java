@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.*;
 
 public class Shop {
-
+    private static final Random random = new Random();
     private String name;
 
     public Shop(String name) {
@@ -13,11 +13,6 @@ public class Shop {
 
     public String getName() {
         return name;
-    }
-
-    public double getPrice(String product) {
-        // 동기 식 방식
-        return calculatePrice(product);
     }
 
     public Future<Double> getPriceAsync(String product) {
@@ -40,9 +35,15 @@ public class Shop {
         return CompletableFuture.supplyAsync(() -> calculatePrice(product));
     }
 
+    public String getPrice(String product) {
+        double price = calculatePrice(product);
+        Discount.Code code = Discount.Code.values()[new Random().nextInt(Discount.Code.values().length)];
+        return String.format("%s:%.2f:%s", name, price, code);
+    }
+
     private double calculatePrice(String product) {
-        delay();
-        return new Random().nextDouble() * product .charAt(0) + product .charAt(1);
+        randomDelay();
+        return random.nextDouble() * product .charAt(0) + product .charAt(1);
     }
 
     private void delay() {
@@ -50,6 +51,15 @@ public class Shop {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void randomDelay() {
+        int delay = 500 + random.nextInt(2000);
+        try {
+            Thread.sleep(delay);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

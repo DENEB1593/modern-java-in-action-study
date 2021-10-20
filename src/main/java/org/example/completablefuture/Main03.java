@@ -1,5 +1,7 @@
 package org.example.completablefuture;
 
+import org.example.completablefuture.domain.Discount;
+import org.example.completablefuture.domain.Quote;
 import org.example.completablefuture.domain.Shop;
 
 import java.util.Arrays;
@@ -9,6 +11,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * 모든 상점의 product 가격을 검색하는 기능을 구현한다
@@ -43,15 +47,40 @@ public class Main03 {
 
     // 각 상점 별 가격 분석
     // String.format("%s : %.2f", shop.getName(), shop.getPrice(product))
-    static List<String> findPrices(String product) {
-        List<CompletableFuture<String>> priceFutures =
-                shops.stream()
-                        .map(shop -> CompletableFuture.supplyAsync(() -> shop.getName() + " : "
-                                                                        + shop.getPrice(product), executor))
-                        .collect(Collectors.toList());
+//    static List<String> findPrices(String product) {
+//        List<CompletableFuture<String>> priceFutures =
+//                shops.stream()
+//                        .map(shop -> CompletableFuture.supplyAsync(() -> shop.getName() + " : "
+//                                                                        + shop.getPrice(product), executor))
+//                        .collect(Collectors.toList());
+//
+//        return priceFutures.stream()
+//                .map(CompletableFuture::join)   //join() 모든 비동기 작업이 끝날 때까지 대기
+//                .collect(Collectors.toList());
+//    }
+
+    public static List<String> findPrices(String product) {
+        return shops.stream()
+                .map(shop -> shop.getPrice(product)) //할인전 가격얻기.
+                .map(Quote::parse) //반환한 문자열을 Quote 객체로 변환
+                .map(Discount::applyDiscount) //각 Quote에 할인 적용
+                .collect(toList());
+    }
+
+    public static List<String> findPricesWithAsync(String product) {
+        List<CompletableFuture<String>> priceFutures = shops.stream()
+                                    .map(shop ->
+                                            CompletableFuture.supplyAsync(
+                                                    () -> shop.getPrice(product), executor))
+                                    .map(future -> future.thenApply(Quote::parse))
+                                    .map(future -> future.thenCompose(quote ->
+                                            CompletableFuture.supplyAsync(
+                                                    () -> Discount.applyDiscount(quote), executor)))
+                                    .collect(toList());
 
         return priceFutures.stream()
-                .map(CompletableFuture::join)   //join() 모든 비동기 작업이 끝날 때까지 대기
-                .collect(Collectors.toList());
+                .map(CompletableFuture::join)
+                .collect(toList());
     }
+
 }
